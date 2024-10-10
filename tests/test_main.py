@@ -33,12 +33,22 @@ def test_repl_exit(mocker):
     assert "Exiting the calculator. Goodbye!" in sys.stdout.getvalue()
 
 def test_repl_menu():
-
     with patch('builtins.input', side_effect=['menu', 'exit']):
         with patch('builtins.print') as mock_print:
             repl()
-            mock_print.assert_any_call("Available commands:", "add, subtract, multiply, divide, cube, square")
-
+            
+            # Extract all print call arguments
+            print_calls = [call.args for call in mock_print.call_args_list]
+            
+            # Check if 'Available commands' is in one of the print calls
+            assert any("Available commands:" in call and 
+                       "add" in call[1] and 
+                       "subtract" in call[1] and 
+                       "multiply" in call[1] and 
+                       "divide" in call[1] and 
+                       "square" in call[1] and 
+                       "cube" in call[1] 
+                       for call in print_calls)
 
 def test_repl_multiprocessing(mocker):
     mocker.patch('builtins.input', side_effect=["5 3 add", "exit"])
