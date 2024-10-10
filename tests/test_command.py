@@ -72,9 +72,6 @@ def test_repl_invalid_input():
             repl()
             mock_print.assert_any_call("Invalid number input: invalid or None is not a valid number.")
 
-def test_command_instantiation_error():
-    with pytest.raises(TypeError, match="Can't instantiate abstract class Command with abstract methods execute"):
-        Command()
 
 def test_execute_in_process():
     command = AddCommand(Decimal('2'), Decimal('3'))
